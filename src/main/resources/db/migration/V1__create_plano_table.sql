@@ -1,5 +1,5 @@
-create table if not exists tbplano (
-    id bigserial primary key,
-    nome varchar(100) not null,
-    descricao text
+CREATE TABLE IF NOT EXISTS tbplano (
+    id BIGSERIAL PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    descricao TEXT
 );
