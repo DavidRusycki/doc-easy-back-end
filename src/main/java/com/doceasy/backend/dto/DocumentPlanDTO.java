@@ -9,6 +9,7 @@ public class DocumentPlanDTO {
 
 	private Long id;
 	private String nome;
+	private String criador;
 	private String descricao;
 	
 	/**
@@ -20,6 +21,7 @@ public class DocumentPlanDTO {
 		
 		plan.setId(dto.getId());
 		plan.setNome(dto.getNome());
+		plan.setCriador(dto.getCriador());
 		plan.setDescricao(dto.getDescricao());
 		
 		return plan;

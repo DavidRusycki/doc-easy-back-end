@@ -2,12 +2,13 @@ package com.doceasy.backend.entity;
 
 import com.doceasy.backend.dto.DocumentPlanDTO;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
@@ -19,9 +20,16 @@ public class DocumentPlan {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(length = 100, nullable = false)
+	@NotNull
+	@NotBlank
 	private String nome;
+
+	@NotNull
+	@NotBlank
+	private String criador;
 	
+	@NotNull
+	@NotBlank
 	private String descricao;
 	
 	/**
@@ -33,6 +41,7 @@ public class DocumentPlan {
 		
 		dto.setId(plan.getId());
 		dto.setNome(plan.getNome());
+		dto.setCriador(plan.getCriador());
 		dto.setDescricao(plan.getDescricao());
 		
 		return dto;

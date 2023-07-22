@@ -7,6 +7,7 @@ import javax.swing.text.Document;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +22,7 @@ import com.doceasy.backend.dto.DocumentPlanDTO;
 import com.doceasy.backend.entity.DocumentPlan;
 import com.doceasy.backend.service.DocumentPlanService;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/doceasy/document/plan")
 public class DocumentPlanController {
