@@ -53,4 +53,12 @@ public class DocumentService {
 		return true;
 	}
 	
+	public List<Document> getFromPlanName(String name) {
+		List<Document> list = null;
+		
+		list = repository.findAll();
+		
+		return list;
+	}
+	
 }

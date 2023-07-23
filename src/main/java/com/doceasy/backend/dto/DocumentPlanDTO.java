@@ -1,5 +1,8 @@
 package com.doceasy.backend.dto;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.doceasy.backend.entity.DocumentPlan;
 
 import lombok.Data;
@@ -7,24 +10,20 @@ import lombok.Data;
 @Data
 public class DocumentPlanDTO {
 
-	private Long id;
-	private String nome;
-	private String criador;
-	private String descricao;
+	private PlanDTO plan;
+	private List<DocumentDTO> documents;
 	
 	/**
-	 * Converte o DTO para entidade
+	 * Converte a entidade em DTO
 	 * @return
 	 */
 	public static DocumentPlan toEntity(DocumentPlanDTO dto) {
-		DocumentPlan plan = new DocumentPlan();
+		DocumentPlan document = new DocumentPlan();
+
+		document.setPlan(PlanDTO.toEntity(dto.getPlan()));
+		document.setDocuments(dto.getDocuments().stream().map(DocumentDTO::toEntity).collect(Collectors.toList()));
 		
-		plan.setId(dto.getId());
-		plan.setNome(dto.getNome());
-		plan.setCriador(dto.getCriador());
-		plan.setDescricao(dto.getDescricao());
-		
-		return plan;
+		return document;
 	}
 	
 }

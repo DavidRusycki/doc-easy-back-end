@@ -1,16 +1,16 @@
 package com.doceasy.backend.repository;
 
-import java.util.List;
-import java.util.UUID;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.doceasy.backend.entity.Document;
+import com.doceasy.backend.entity.Plan;
 
 @Repository
-public interface DocumentRepository extends JpaRepository<Document, UUID>{
+public interface PlanRepository extends JpaRepository<Plan, Long>{
 
-	List<Document> findByIdPlano(Long id);
+	Optional<Plan> findByNome(String name);
 
 }

@@ -1,7 +1,6 @@
 package com.doceasy.backend.Controller;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,45 +15,43 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.doceasy.backend.dto.DocumentDTO;
 import com.doceasy.backend.dto.PlanDTO;
-import com.doceasy.backend.entity.Document;
 import com.doceasy.backend.entity.Plan;
-import com.doceasy.backend.service.DocumentService;
+import com.doceasy.backend.service.PlanService;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/doceasy/document")
-public class DocumentController {
+@RequestMapping("/doceasy/plan")
+public class PlanController {
 
 	@Autowired
-	private DocumentService service;
+	private PlanService service;
 	
 	@GetMapping("/all")
-	public List<DocumentDTO> getAll() {
-		List<Document> search = service.getAll();
-		List<DocumentDTO> list = search.stream().map(Document::toDto).collect(Collectors.toList());
+	public List<PlanDTO> getAll() {
+		List<Plan> search = service.getAll();
+		List<PlanDTO> list = search.stream().map(Plan::toDto).collect(Collectors.toList());
 		
 		return list;
 	}
 	
 	@PostMapping("/new")
-	public ResponseEntity<DocumentDTO> newDocumentPlan(@RequestBody DocumentDTO dto) {
-		Document result = service.save(DocumentDTO.toEntity(dto));
+	public ResponseEntity<PlanDTO> newDocumentPlan(@RequestBody PlanDTO dto) {
+		Plan result = service.save(PlanDTO.toEntity(dto));
 		
-		return ResponseEntity.ok().body(Document.toDto(result));
+		return ResponseEntity.ok().body(Plan.toDto(result));
 	}
 	
 	@PutMapping("/update")
-	public ResponseEntity<DocumentDTO> updateDocument(@RequestBody DocumentDTO dto) {
-		Document result = service.save(DocumentDTO.toEntity(dto));
+	public ResponseEntity<PlanDTO> updateDocumentPlan(@RequestBody PlanDTO dto) {
+		Plan result = service.save(PlanDTO.toEntity(dto));
 		
-		return ResponseEntity.ok().body(Document.toDto(result));
+		return ResponseEntity.ok().body(Plan.toDto(result));
 	}
 	
-	@DeleteMapping("/delete/{uuid}")
-	public ResponseEntity deleteDocument(@PathVariable UUID uuid) {
-		Boolean bo = service.delete(uuid);
+	@DeleteMapping("/delete/{id}")
+	public ResponseEntity deleteDocumentPlan(@PathVariable Long id) {
+		Boolean bo = service.delete(id);
 		
 		return ResponseEntity.ok().build();
 	}

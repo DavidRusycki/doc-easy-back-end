@@ -1,49 +1,29 @@
 package com.doceasy.backend.entity;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.doceasy.backend.dto.DocumentPlanDTO;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-@Entity
-@Table(name = "tbplano")
 public class DocumentPlan {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	
-	@NotNull
-	@NotBlank
-	private String nome;
-
-	@NotNull
-	@NotBlank
-	private String criador;
-	
-	@NotNull
-	@NotBlank
-	private String descricao;
+	private Plan plan;
+	private List<Document> documents;
 	
 	/**
 	 * Converte a entidade em DTO
 	 * @return
 	 */
-	public static DocumentPlanDTO toDto(DocumentPlan plan) {
+	public static DocumentPlanDTO toDto(DocumentPlan documentPlan) {
 		DocumentPlanDTO dto = new DocumentPlanDTO();
 		
-		dto.setId(plan.getId());
-		dto.setNome(plan.getNome());
-		dto.setCriador(plan.getCriador());
-		dto.setDescricao(plan.getDescricao());
-		
+		dto.setPlan(Plan.toDto(documentPlan.getPlan()));
+		dto.setDocuments(documentPlan.getDocuments().stream().map(Document::toDto).collect(Collectors.toList()));
+				
 		return dto;
 	}
 	

@@ -4,7 +4,8 @@ CREATE TABLE IF NOT EXISTS tbdocumento (
     nome VARCHAR(100) NOT NULL,
     descricao VARCHAR(500) NOT NULL,
     descricao_completa TEXT NOT NULL,
-    situacao SMALLINT NOT NULL
+    situacao SMALLINT NOT NULL,
+    UNIQUE(id_plano, nome)
 );
 
 ALTER TABLE tbdocumento ADD CONSTRAINT fk_tbplano FOREIGN KEY (id_plano) REFERENCES tbplano(id); 

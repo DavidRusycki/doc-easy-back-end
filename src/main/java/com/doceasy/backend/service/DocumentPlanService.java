@@ -6,50 +6,40 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.doceasy.backend.entity.Document;
 import com.doceasy.backend.entity.DocumentPlan;
-import com.doceasy.backend.repository.DocumentPlanRepository;
+import com.doceasy.backend.entity.Plan;
+import com.doceasy.backend.repository.DocumentRepository;
+import com.doceasy.backend.repository.PlanRepository;
 
+import lombok.Data;
+
+@Data
 @Service
 public class DocumentPlanService {
 
 	@Autowired
-	private DocumentPlanRepository repository;
+	private PlanRepository planRepository;
+	@Autowired
+	private DocumentRepository documentRepository;
 	
 	/**
-	 * Retorna todos os registros
+	 * Retorna os documentos de um plano.
+	 * @param name
 	 * @return
 	 */
-	public List<DocumentPlan> getAll() {
-		List<DocumentPlan> list = null;
+	public DocumentPlan getAllDocumentsFromPlanName(String name) {
 		
-		list = repository.findAll();
+		Optional<Plan> optional = planRepository.findByNome(name);
+		Plan plan = optional.get(); 
 		
-		return list;
-	}
-
-	/**
-	 * Salva a entidade no banco
-	 * @param plan
-	 * @return
-	 */
-	public DocumentPlan save(DocumentPlan plan) {
+		List<Document> list = documentRepository.findByIdPlano(plan.getId());
 		
-		//TODO Implementar log de erro quando não conseguir salvar.
+		DocumentPlan documentPlan = new DocumentPlan();
+		documentPlan.setPlan(plan);
+		documentPlan.setDocuments(list);
 		
-		return repository.save(plan);
-	}
-
-	/**
-	 * Remove a entidade do banco
-	 * @param plan
-	 * @return
-	 */
-	public Boolean delete(Long id) {
-		Optional<DocumentPlan> optional = repository.findById(id);
-		DocumentPlan plan = optional.get();
-		repository.delete(plan);
-		
-		return true;
+		return documentPlan;
 	}
 	
 }
