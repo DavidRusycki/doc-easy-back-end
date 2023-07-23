@@ -27,5 +27,4 @@ public class DocumentPlanController {
 		return DocumentPlan.toDto(documentPlan);
 	}
 	
-	
 }

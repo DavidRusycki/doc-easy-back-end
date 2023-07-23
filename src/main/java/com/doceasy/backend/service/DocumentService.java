@@ -1,5 +1,7 @@
 package com.doceasy.backend.service;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -15,6 +17,9 @@ public class DocumentService {
 
 	@Autowired
 	private DocumentRepository repository;
+	
+	@Autowired
+	private DocumentExampleService exampleService;
 	
 	/**
 	 * Retorna todos os registros
@@ -32,14 +37,29 @@ public class DocumentService {
 	 * Salva a entidade no banco
 	 * @param plan
 	 * @return
+	 * @throws IOException 
+	 */
+	public Document save(Document plan, InputStream stream) throws IOException {
+		
+		//TODO Implementar log de erro quando não conseguir salvar.
+		Document result = repository.save(plan);
+		exampleService.save(result, stream);
+		
+		return result;
+	}
+
+	/**
+	 * Salva a entidade no banco
+	 * @param plan
+	 * @return
+	 * @throws IOException 
 	 */
 	public Document save(Document plan) {
-		
 		//TODO Implementar log de erro quando não conseguir salvar.
 		
 		return repository.save(plan);
 	}
-
+	
 	/**
 	 * Remove a entidade do banco
 	 * @param plan

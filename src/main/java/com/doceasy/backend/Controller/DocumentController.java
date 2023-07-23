@@ -14,13 +14,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.doceasy.backend.dto.DocumentDTO;
-import com.doceasy.backend.dto.PlanDTO;
 import com.doceasy.backend.entity.Document;
-import com.doceasy.backend.entity.Plan;
+import com.doceasy.backend.service.DocumentExampleService;
 import com.doceasy.backend.service.DocumentService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -39,10 +42,21 @@ public class DocumentController {
 	}
 	
 	@PostMapping("/new")
-	public ResponseEntity<DocumentDTO> newDocumentPlan(@RequestBody DocumentDTO dto) {
-		Document result = service.save(DocumentDTO.toEntity(dto));
-		
-		return ResponseEntity.ok().body(Document.toDto(result));
+	public ResponseEntity<DocumentDTO> newDocumentPlan(
+		@RequestPart(name = "file", required = true) MultipartFile multipart, 
+		@RequestParam(name = "document", required = true) String documentJson
+	) {
+		try {
+			DocumentDTO dto = new ObjectMapper().readValue(documentJson, DocumentDTO.class);
+			
+			Document result = service.save(DocumentDTO.toEntity(dto), multipart.getInputStream());
+			
+			return ResponseEntity.ok().body(Document.toDto(result));
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+			return ResponseEntity.internalServerError().build();
+		}
 	}
 	
 	@PutMapping("/update")
