@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.doceasy.backend.dto.DocumentDTO;
+import com.doceasy.backend.dto.DocumentExampleDTO;
 import com.doceasy.backend.entity.Document;
-import com.doceasy.backend.service.DocumentExampleService;
 import com.doceasy.backend.service.DocumentService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -43,13 +43,25 @@ public class DocumentController {
 	
 	@PostMapping("/new")
 	public ResponseEntity<DocumentDTO> newDocumentPlan(
-		@RequestPart(name = "file", required = true) MultipartFile multipart, 
+		@RequestPart(name = "file", required = false) MultipartFile multipart, 
 		@RequestParam(name = "document", required = true) String documentJson
 	) {
 		try {
 			DocumentDTO dto = new ObjectMapper().readValue(documentJson, DocumentDTO.class);
 			
-			Document result = service.save(DocumentDTO.toEntity(dto), multipart.getInputStream());
+			Document result = null;
+			if (multipart != null) {
+				//TODO talvez seja interessante mover essas regras e carregamentos de dados para o service.
+				DocumentExampleDTO exampleDto = new DocumentExampleDTO();
+				exampleDto.setInputStream(multipart.getInputStream());
+				exampleDto.setTamanho(multipart.getSize());
+				exampleDto.setNomeOriginal(multipart.getOriginalFilename());
+				
+				result = service.save(DocumentDTO.toEntity(dto), exampleDto);				
+			}
+			else {
+				result = service.save(DocumentDTO.toEntity(dto));								
+			}
 			
 			return ResponseEntity.ok().body(Document.toDto(result));
 		} catch (Exception e) {

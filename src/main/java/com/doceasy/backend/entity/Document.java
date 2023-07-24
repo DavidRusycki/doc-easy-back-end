@@ -50,4 +50,15 @@ public class Document {
 		return dto;
 	}
 	
+	/**
+	 * Carrega as informações do outro modelo para esse.
+	 * @param plan
+	 */
+	public void loadDataForUpdate(Document plan) {
+		this.setSituacao(plan.getSituacao());
+		this.setDescricao(plan.getDescricao());
+		this.setDescricaoCompleta(plan.getDescricaoCompleta());
+		this.setNome(plan.getNome());
+	}
+	
 }

@@ -9,6 +9,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.doceasy.backend.dto.DocumentExampleDTO;
 import com.doceasy.backend.entity.Document;
 import com.doceasy.backend.entity.DocumentExample;
 import com.doceasy.backend.repository.DocumentExampleRepository;
@@ -43,17 +44,30 @@ public class DocumentExampleService {
 	}
 	
 	/**
+	 * Indica se existe um documento de exemplo cadastrado para o uuid de documento passado.
+	 * @param uuid
+	 * @return
+	 */
+	public Boolean getExistsFromDocumentUuid(UUID uuid) {
+		DocumentExample document = repository.findByUuidDocumento(uuid);
+		
+		return document.getUuid() != null;
+	}
+	
+	/**
 	 * Salva a entidade no banco
 	 * @param plan
 	 * @return
 	 * @throws IOException 
 	 */
-	public DocumentExample save(Document document, InputStream stream) throws IOException {
+	public DocumentExample save(Document document, DocumentExampleDTO exampleDto) throws IOException {
 		//TODO Implementar log de erro quando não conseguir salvar.
 		
 		DocumentExample example = new DocumentExample();
 		example.setUuidDocumento(document.getUuid());
-		example.setContent(stream.readAllBytes());	
+		example.setContent(exampleDto.getInputStream().readAllBytes());
+		example.setTamanho(exampleDto.getTamanho());
+		example.setNomeOriginal(exampleDto.getNomeOriginal());
 		
 		return repository.save(example);
 	}

@@ -9,7 +9,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
@@ -25,6 +27,14 @@ public class DocumentExample {
 	private UUID uuidDocumento;
 	
 	@NotNull
+	@NotBlank
+	@Size(max = 100)
+	private String nomeOriginal;
+	
+	@NotNull
+	private Long tamanho;
+	
+	@NotNull
 	private byte[] content;
 	
 	/**
@@ -36,6 +46,8 @@ public class DocumentExample {
 		
 		dto.setUuid(document.getUuid());
 		dto.setUuidDocumento(document.getUuidDocumento());
+		dto.setNomeOriginal(document.getNomeOriginal());
+		dto.setTamanho(document.getTamanho());
 		dto.setContent(document.getContent());
 		
 		return dto;

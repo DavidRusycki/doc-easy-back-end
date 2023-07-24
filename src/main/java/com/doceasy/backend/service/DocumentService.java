@@ -9,7 +9,9 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.doceasy.backend.dto.DocumentExampleDTO;
 import com.doceasy.backend.entity.Document;
+import com.doceasy.backend.entity.DocumentExample;
 import com.doceasy.backend.repository.DocumentRepository;
 
 @Service
@@ -39,11 +41,20 @@ public class DocumentService {
 	 * @return
 	 * @throws IOException 
 	 */
-	public Document save(Document plan, InputStream stream) throws IOException {
+	public Document save(Document plan, DocumentExampleDTO exampleDto) throws IOException {
 		
 		//TODO Implementar log de erro quando não conseguir salvar.
+		
+		if (plan.getUuid() != null) {
+			DocumentExample example = exampleService.getFromDocumentUuid(plan.getUuid());
+			
+			if (example.getUuid() != null) {
+				exampleService.delete(example.getUuid());
+			}
+		}
+		
 		Document result = repository.save(plan);
-		exampleService.save(result, stream);
+		exampleService.save(result, exampleDto);
 		
 		return result;
 	}
@@ -56,6 +67,13 @@ public class DocumentService {
 	 */
 	public Document save(Document plan) {
 		//TODO Implementar log de erro quando não conseguir salvar.
+		
+		if (plan.getUuid() != null) {
+			Optional<Document> optional = repository.findById(plan.getUuid());
+			Document loaded = optional.get();
+			loaded.loadDataForUpdate(plan);	
+			plan = loaded;
+		}
 		
 		return repository.save(plan);
 	}
