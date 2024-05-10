@@ -1,12 +1,13 @@
 # doc-easy-back-end
 
-Projeto para o back-end da minha aplicação de TCC Doc Easy.
+Projeto de back-end de negócios da minha aplicação de TCC (Doc Easy).
 
-Esse projeto irá conter as API's que serão utilizadas para administração e consulta de informações, sendo o responsável pelo funcionamento do back-end do Doc Easy.
+## Descrição 🧑🏼‍🏫
 
-# ⚙ Tecnologies
+Esse projeto é responsável por conter as API's que são utilizadas para administração e consulta de informações sobre o negócio da aplicação. Tais como planos de documentos, documentos, descrições, documentos de exemplo, entre outros.
+
+## Tecnologias ⚙
 
 - Java
 - Spring Boot
 - PostgresSQL
-- Docker
